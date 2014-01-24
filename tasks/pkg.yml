@@ -1,0 +1,20 @@
+---
+- name: pkg - install apache passenger packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+  - libapache2-mod-passenger
+  when: passenger_webserver == "apache"
+
+- name: pkg - install nginx passenger packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+  - nginx-extras
+  - passenger
+  when: passenger_webserver == "nginx"
+
+- name: pkg - install standalone passenger packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+  - passenger
+  when: passenger_webserver == "standalone"
+

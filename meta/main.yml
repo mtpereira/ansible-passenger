@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Manuel Tiago Pereira
+  description: Installs Phusion Passenger.
+  license: MIT
+  min_ansible_version: 1.4
+  platforms:
+  - name: Debian
+    versions:
+    - squeeze
+    - wheezy
+  - name: Ubuntu
+    versions:
+    - lucid
+    - precise
+    - saucy
+  categories:
+    - web
+dependencies: []
+

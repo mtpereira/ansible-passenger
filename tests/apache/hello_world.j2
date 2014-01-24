@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+    ServerName localhost
+    DocumentRoot {{ ansible_env.HOME }}/hello_world/public
+    <Directory {{ ansible_env.HOME }}/hello_world/public>
+        Allow from all
+        Options -MultiViews
+    </Directory>
+</VirtualHost>
