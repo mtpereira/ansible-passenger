@@ -1,2 +1,3 @@
 ---
 passenger_webserver: "standalone"
+passenger_pkgs_state: "installed"

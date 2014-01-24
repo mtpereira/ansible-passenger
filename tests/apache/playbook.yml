@@ -3,6 +3,7 @@
 
   vars:
   - passenger_webserver: "apache"
+  - passenger_pkgs_state: "latest"
 
   tasks:
   - { include: ../../tasks/main.yml, sudo: yes }
@@ -12,6 +13,7 @@
 
   - name: tests - add hello_world rack app config
     copy: src=config.ru dest={{ ansible_env.HOME }}/hello_world/
+    notify: apache restart
 
   - name: tests - disable default apache site
     file: state=absent dest=/etc/apache2/sites-enabled/000-default
