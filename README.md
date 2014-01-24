@@ -26,4 +26,6 @@ MIT
 Author Information
 ------------------
 
-mtpereira.github.io
+[GitHub project page](https://github.com/mtpereira/ansible-passenger)
+
+[Manuel Tiago Pereira](http://mtpereira.github.io)
