@@ -5,23 +5,47 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "opscode-debian-7.2.0"
   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box"
-  config.vm.hostname = "ansible-passenger"
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
     v.customize ["modifyvm", :id, "--memory", 512]
   end
 
-  config.vm.network :forwarded_port, guest: 80, host: 8080
-  config.vm.network :private_network, ip: "10.0.0.10"
-
   config.vm.provision :shell do |shell|
     shell.inline = "sudo apt-get install python-pycurl"
   end
 
-  config.vm.provision :ansible do |ansible|
-    ansible.playbook = "playbook.yml"
-    ansible.verbose = false
+  config.vm.define "apache" do |apache|
+    apache.vm.hostname = "passenger-apache"
+    apache.vm.network :forwarded_port, guest: 80, host: 8080
+    apache.vm.network :private_network, ip: "10.0.0.10"
+
+    apache.vm.provision :ansible do |ansible|
+      ansible.playbook = "apache/apache.yml"
+      ansible.verbose = false
+    end
+  end
+
+ config.vm.define "nginx" do |nginx|
+    nginx.vm.hostname = "passenger-nginx"
+    nginx.vm.network :forwarded_port, guest: 80, host: 8081
+    nginx.vm.network :private_network, ip: "10.0.0.11"
+
+    nginx.vm.provision :ansible do |ansible|
+      ansible.playbook = "nginx/nginx.yml"
+      ansible.verbose = false
+    end
+  end
+
+ config.vm.define "standalone" do |standalone|
+    standalone.vm.hostname = "passenger-standalone"
+    standalone.vm.network :forwarded_port, guest: 80, host: 8083
+    standalone.vm.network :private_network, ip: "10.0.0.12"
+
+    standalone.vm.provision :ansible do |ansible|
+      ansible.playbook = "standalone/standalone.yml"
+      ansible.verbose = false
+    end
   end
 
 end
