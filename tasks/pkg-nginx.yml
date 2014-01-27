@@ -1,0 +1,6 @@
+---
+- name: pkg - install (state={{ passenger_pkgs_state }}) nginx and passenger
+  apt: pkg={{ item }} state={{ passenger_pkgs_state }}
+  with_items:
+  - nginx-extras
+  - passenger
