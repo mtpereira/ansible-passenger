@@ -1,5 +1,5 @@
 ---
-- name: pkg - install (state={{ passenger_pkgs_state }}) apache and passenger
+- name: pkg - install apache and passenger
   apt: pkg={{ item }} state={{ passenger_pkgs_state }}
   with_items:
   - libapache2-mod-passenger
