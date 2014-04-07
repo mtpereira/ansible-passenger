@@ -5,12 +5,12 @@ Installs or updates Pushion Passenger.
 
 It will install apache, nginx or standalone modes, depending on **passenger_webserver** variable value (defaults to standalone).
 
-In the `tests` folder, there are a set of tests for this role, that will provision a VM using Vagrant and setup a simple hello world app. To use them, `cd` into the `tests/{passenger_webserver}/` and execute `vagrant up`. At the moment, `nginx` and `standalone` tests are WIP.
+In the `tests` folder, there are a set of tests for this role, that will provision a VM using Vagrant and setup a simple hello world app. To use them, `cd` into the `tests/{passenger_webserver}/` and execute `vagrant up`. At the moment, only `apache` tests are done.
 
 Requirements
 ------------
 
-Assumes that the host is ansible-ready (check **ansible-bootstrap** repository).
+Assumes that the host is ansible-ready (check **mtpereira.common** role).
 
 Role Variables
 --------------
