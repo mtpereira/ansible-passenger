@@ -1,5 +1,5 @@
 ---
 - include: apt.yml tags=apt
-- include: pkg-{{ passenger_webserver }}.yml tags=pkg
-- include: service-{{ passenger_webserver }}.yml tags=service
+- include: pkg.yml tags=pkg
+- include: service.yml tags=service
   when: passenger_webserver != "standalone"

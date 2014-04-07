@@ -1,5 +1,0 @@
----
-- name: pkg - install standalone passenger packages
-  apt: pkg={{ item }} state={{ passenger_pkgs_state }}
-  with_items:
-  - passenger
