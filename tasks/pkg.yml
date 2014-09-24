@@ -3,6 +3,7 @@
   apt: pkg={{ item }} state={{ passenger_pkgs_state }}
   with_items:
     - libapache2-mod-passenger
+  notify: apache restart
   when: passenger_webserver == "apache"
 
 - name: pkg - install nginx passenger packages
@@ -10,6 +11,7 @@
   with_items:
     - nginx-extras
     - passenger
+  notify: nginx restart
   when: passenger_webserver == "nginx"
 
 - name: pkg - install standalone passenger packages
@@ -17,3 +19,15 @@
   with_items:
     - passenger
   when: passenger_webserver == "standalone"
+
+- name: pkg - fix passenger utils shebang
+  lineinfile:
+    dest: "{{ item }}"
+    regexp: '^#\!/usr/bin/ruby\s*'
+    line: "#!/usr/bin/env ruby"
+    backrefs: yes
+    state: present
+  with_items:
+    - /usr/sbin/passenger-memory-stats
+    - /usr/sbin/passenger-status
+  when: passenger_pkgs_fix_shebang

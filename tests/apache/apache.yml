@@ -4,40 +4,37 @@
   vars:
   - passenger_webserver: "apache"
   - passenger_pkgs_state: "latest"
+  - passenger_pkgs_fix_shebang: yes
 
-  tasks:
-  - { include: ../../tasks/main.yml, sudo: yes }
+  roles:
+    - { role: ../../../, sudo: yes }
 
-  - name: tests - add hello_world rack app dir
-    file: state=directory dest={{ ansible_env.HOME }}/hello_world/public recurse=yes
+  post_tasks:
+    - name: tests - add hello_world rack app dir
+      file: state=directory dest={{ ansible_env.HOME }}/hello_world/public recurse=yes
 
-  - name: tests - add hello_world rack app config
-    copy: src=config.ru dest={{ ansible_env.HOME }}/hello_world/
-    notify: apache restart
+    - name: tests - add hello_world rack app config
+      copy: src=config.ru dest={{ ansible_env.HOME }}/hello_world/
+      notify: apache restart
 
-  - name: tests - disable default apache site
-    file: state=absent dest=/etc/apache2/sites-enabled/000-default
-    sudo: yes
-    notify: apache restart
+    - name: tests - disable default apache site
+      file: state=absent dest=/etc/apache2/sites-enabled/000-default
+      sudo: yes
+      notify: apache restart
 
-  - name: tests - add hello_world webserver site config
-    template: src=hello_world.j2 dest=/etc/apache2/sites-enabled/hello_world
-    notify: apache restart
-    sudo: yes
-
-  handlers:
-  - name: apache restart
-    service: name=apache2 state=restarted
-    sudo: yes
+    - name: tests - add hello_world webserver site config
+      template: src=hello_world.j2 dest=/etc/apache2/sites-enabled/hello_world
+      notify: apache restart
+      sudo: yes
 
 - hosts: all
   connection: local
 
   tasks:
-  - name: tests - check site availability and content
-    shell: wget --no-verbose -O - http://localhost:8080
-    register: reg_wget
+    - name: tests - check site availability and content
+      shell: wget --no-verbose -O - http://localhost:8080
+      register: reg_wget
 
-  - name: tests - check site result
-    debug: var=reg_wget
-    failed_when: "'hello world' not in reg_wget.stdout"
+    - name: tests - check site result
+      debug: var=reg_wget
+      failed_when: "'hello world' not in reg_wget.stdout"
