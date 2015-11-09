@@ -6,6 +6,11 @@
   - passenger_pkgs_state: "latest"
   - passenger_pkgs_fix_shebang: yes
 
+  pre_tasks:
+    - name: tests - install python-pycurl
+      apt: pkg=python-pycurl state=latest
+      sudo: yes
+
   roles:
     - { role: ../../../, sudo: yes }
 
@@ -23,18 +28,19 @@
       notify: apache restart
 
     - name: tests - add hello_world webserver site config
-      template: src=hello_world.j2 dest=/etc/apache2/sites-enabled/hello_world
+      template: src=hello_world.j2 dest=/etc/apache2/sites-enabled/hello_world.conf
       notify: apache restart
       sudo: yes
 
 - hosts: all
-  connection: local
+  #connection: local
 
   tasks:
     - name: tests - check site availability and content
-      shell: wget --no-verbose -O - http://localhost:8080
-      register: reg_wget
+      command: curl -si http://localhost
+      register: site_availability
 
     - name: tests - check site result
-      debug: var=reg_wget
-      failed_when: "'hello world' not in reg_wget.stdout"
+      debug: var=site_availability
+      failed_when: "'hello world' not in site_availability.stdout"
+

@@ -3,6 +3,7 @@
   apt: pkg={{ item }} state={{ passenger_pkgs_state }}
   with_items:
     - libapache2-mod-passenger
+    - apache2
   notify: apache restart
   when: passenger_webserver == "apache"
 
@@ -31,3 +32,4 @@
     - /usr/sbin/passenger-memory-stats
     - /usr/sbin/passenger-status
   when: passenger_pkgs_fix_shebang
+
