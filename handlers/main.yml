@@ -1,8 +1,10 @@
 ---
 - name: apache restart
   service: name=apache2 state=restarted
-  sudo: yes
+  become: true
+  become_method: sudo
 
 - name: nginx restart
   service: name=nginx state=restarted
-  sudo: yes
+  become: true
+  become_method: sudo
