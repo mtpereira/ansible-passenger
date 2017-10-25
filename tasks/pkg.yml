@@ -1,6 +1,8 @@
 ---
 - name: pkg - install apache passenger packages
-  apt: pkg={{ item }} state={{ passenger_pkgs_state }}
+  apt:
+    pkg: "{{ item }}"
+    state: "{{ passenger_pkgs_state }}"
   with_items:
     - libapache2-mod-passenger
     - apache2
@@ -8,7 +10,9 @@
   when: passenger_webserver == "apache"
 
 - name: pkg - install nginx passenger packages
-  apt: pkg={{ item }} state={{ passenger_pkgs_state }}
+  apt:
+    pkg: "{{ item }}"
+    state: "{{ passenger_pkgs_state }}"
   with_items:
     - nginx-extras
     - passenger
@@ -16,20 +20,10 @@
   when: passenger_webserver == "nginx"
 
 - name: pkg - install standalone passenger packages
-  apt: pkg={{ item }} state={{ passenger_pkgs_state }}
+  apt:
+    pkg: "{{ item }}"
+    state: "{{ passenger_pkgs_state }}"
   with_items:
     - passenger
   when: passenger_webserver == "standalone"
-
-- name: pkg - fix passenger utils shebang
-  lineinfile:
-    dest: "{{ item }}"
-    regexp: '^#\!/usr/bin/ruby\s*'
-    line: "#!/usr/bin/env ruby"
-    backrefs: yes
-    state: present
-  with_items:
-    - /usr/sbin/passenger-memory-stats
-    - /usr/sbin/passenger-status
-  when: passenger_pkgs_fix_shebang
 

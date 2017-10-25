@@ -8,42 +8,60 @@
 
   pre_tasks:
     - name: tests - install python-pycurl
-      apt: pkg=python-pycurl state=latest
-      become: true
+      apt:
+        pkg: python-pycurl
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600
+      become: yes
       become_method: sudo
 
   roles:
-    - { role: ../../../, become: true, become_method: sudo }
+    - role: ../../../
+      become: yes
+      become_method: sudo
 
   post_tasks:
     - name: tests - add hello_world rack app dir
-      file: state=directory dest={{ ansible_env.HOME }}/hello_world/public recurse=yes
+      file:
+        state: directory
+        dest: "{{ ansible_env.HOME }}/hello_world/public"
+        recurse: yes
 
     - name: tests - add hello_world rack app config
-      copy: src=config.ru dest={{ ansible_env.HOME }}/hello_world/
+      copy:
+        src: config.ru
+        dest: "{{ ansible_env.HOME }}/hello_world/"
       notify: apache restart
 
     - name: tests - disable default apache site
-      file: state=absent dest=/etc/apache2/sites-enabled/000-default
-      become: true
+      file:
+        state: absent
+        dest: /etc/apache2/sites-enabled/000-default
+      become: yes
       become_method: sudo
       notify: apache restart
 
     - name: tests - add hello_world webserver site config
-      template: src=hello_world.j2 dest=/etc/apache2/sites-enabled/hello_world.conf
+      template:
+        src: hello_world.j2
+        dest: /etc/apache2/sites-enabled/hello_world.conf
       notify: apache restart
-      become: true
+      become: yes
       become_method: sudo
 
 - hosts: all
-  #connection: local
 
   tasks:
     - name: tests - check site availability and content
-      command: curl -si http://localhost
+      uri:
+        url: http://localhost
+        method: GET
+        return_content: yes
       register: site_availability
 
     - name: tests - check site result
-      debug: var=site_availability
-      failed_when: "'hello world' not in site_availability.stdout"
+      assert:
+        that:
+          - "'hello world' in site_availability.content"
 
