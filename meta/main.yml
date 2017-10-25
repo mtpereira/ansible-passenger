@@ -18,7 +18,7 @@ galaxy_info:
     - yakkety
   galaxy_tags:
     - web
-    = ruby
+    - ruby
     - passenger
 dependencies: []
 
