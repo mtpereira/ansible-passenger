@@ -3,7 +3,7 @@ galaxy_info:
   author: Manuel Tiago Pereira
   description: Installs Phusion Passenger.
   license: MIT
-  min_ansible_version: 1.4
+  min_ansible_version: 2.4
   platforms:
   - name: Debian
     versions:
@@ -15,7 +15,10 @@ galaxy_info:
     - precise
     - saucy
     - trusty
-  categories:
+    - yakkety
+  galaxy_tags:
     - web
+    = ruby
+    - passenger
 dependencies: []
 
