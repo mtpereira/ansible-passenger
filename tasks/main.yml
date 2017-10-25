@@ -1,8 +1,10 @@
 ---
-- include: apt.yml
+- include_tasks: apt.yml
   tags: passenger_apt
-- include: pkg.yml
+
+- include_tasks: pkg.yml
   tags: passenger_pkg
-- include: service.yml
+
+- include_tasks: service.yml
   tags: passenger_service
   when: passenger_webserver != "standalone"
