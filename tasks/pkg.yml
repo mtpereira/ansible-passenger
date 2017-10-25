@@ -27,15 +27,3 @@
     - passenger
   when: passenger_webserver == "standalone"
 
-- name: pkg - fix passenger utils shebang
-  lineinfile:
-    dest: "{{ item }}"
-    regexp: '^#\!/usr/bin/ruby\s*'
-    line: "#!/usr/bin/env ruby"
-    backrefs: yes
-    state: present
-  with_items:
-    - /usr/sbin/passenger-memory-stats
-    - /usr/sbin/passenger-status
-  when: passenger_pkgs_fix_shebang
-
