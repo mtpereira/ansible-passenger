@@ -1,29 +1,21 @@
 ---
 - name: pkg - install apache passenger packages
   apt:
-    pkg: "{{ item }}"
+    pkg: [libapache2-mod-passenger, apache2]
     state: "{{ passenger_pkgs_state }}"
-  with_items:
-    - libapache2-mod-passenger
-    - apache2
   notify: apache restart
   when: passenger_webserver == "apache"
 
 - name: pkg - install nginx passenger packages
   apt:
-    pkg: "{{ item }}"
+    pkg: [nginx-extras, passenger]
     state: "{{ passenger_pkgs_state }}"
-  with_items:
-    - nginx-extras
-    - passenger
   notify: nginx restart
   when: passenger_webserver == "nginx"
 
 - name: pkg - install standalone passenger packages
   apt:
-    pkg: "{{ item }}"
+    pkg: passenger
     state: "{{ passenger_pkgs_state }}"
-  with_items:
-    - passenger
   when: passenger_webserver == "standalone"
 

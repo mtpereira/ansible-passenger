@@ -7,13 +7,10 @@
 
 - name: apt - add support for https
   apt:
-    pkg: "{{ item }}"
+    pkg: [apt-transport-https, ca-certificates]
     update_cache: yes
     cache_valid_time: 3600
     state: "{{ passenger_pkgs_state }}"
-  with_items:
-  - apt-transport-https
-  - ca-certificates
 
 - name: apt - add passenger repo
   apt_repository:
